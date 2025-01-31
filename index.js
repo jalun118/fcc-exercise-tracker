@@ -81,24 +81,25 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
     });
   }
 
-  const newExercise = new Exercise({
-    user_id: id,
-    date: date ?? new Date(),
-    description: description,
-    duration: duration
-  });
-
   try {
+    const newExercise = new Exercise({
+      user_id: id,
+      date: date ?? new Date(),
+      description: description,
+      duration: duration
+    });
+
     const exercise = await newExercise.save();
     return res.json({
       _id: exercise._id,
       username: user.username,
-      date: exercise.date.toDateString(),
+      date: new Date(exercise.date).toDateString(),
       duration: exercise.duration,
       description: exercise.description
     });
   } catch (e) {
-    return res.send(e);
+    console.log(e);
+    return res.send("Error in proccess");
   }
 });
 
